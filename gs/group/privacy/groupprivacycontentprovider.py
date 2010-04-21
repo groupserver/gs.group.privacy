@@ -13,6 +13,11 @@ class Views(object):
         self.anon = 'Anonymous' in roles
         self.siteMember = 'DivisionMember' in roles
         
+        self.siteMemberOnly = not(self.anon) and self.siteMember
+        self.groupMemberOnly = not(self.anon or self.siteMember)
+        
+        # --=mpj17=-- I am tempted to assert that the GroupMember has
+        #   the view role, but I won't.
         assert type(self.anon) == bool
         assert type(self.siteMember) == bool
         
