@@ -1,8 +1,8 @@
 # coding=utf-8
-from zope.interface import Interface
+from zope.contentprovider.interfaces import IContentProvider
 from zope.schema import *
 
-class IGSGroupPrivacyContentProvider( Interface ):
+class IGSGroupPrivacyContentProvider( IContentProvider ):
     groupId = ASCIILine(title=u'Group Identifier',
         description=u'The identifier for the group',
         required=True)
