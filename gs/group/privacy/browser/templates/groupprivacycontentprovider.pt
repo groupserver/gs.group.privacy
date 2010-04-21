@@ -1,0 +1,32 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  id="group-privacy"  
+  tal:define="view options/view">
+  <p id="group-privacy-summary">
+    <span class="group" 
+      tal:content="view/groupInfo/name">This group</span> is a 
+    <span class="val"
+      tal:content="view/groupType">ninja</span>
+    group.
+  </p>
+  <ul id="group-privacy-details">
+    <li id="group-privacy-details-group">The group is visible to 
+      <strong tal:condition="view/groupView/anon">anyone.</strong>
+      <span tal:condition="view/groupView/siteMember">people who are
+        <strong>logged in.</strong></span>
+      <strong tal:condition="not view/groupView/siteMember">members 
+        only.</strong></li>
+    <li id="group-privacy-details-posts">Posts made to the group are
+      visible to 
+      <strong tal:condition="view/messagesView/anon">anyone.</strong>
+      <span tal:condition="view/messagesView/siteMember">people who are
+        <strong>logged in.</strong></span>
+      <strong tal:condition="not view/messagesView/siteMember">members 
+        only.</strong></li>
+    <!--Mention the members list when 
+      - https://projects.iopen.net/groupserver/ticket/348 is delt 
+      - with.-->
+  </ul>
+</div><!--group-privacy-->
+
