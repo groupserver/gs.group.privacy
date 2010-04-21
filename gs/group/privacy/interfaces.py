@@ -1,5 +1,6 @@
 # coding=utf-8
 from zope.interface import Interface
+from zope.schema import *
 
 class IGSGroupPrivacyContentProvider( Interface ):
     groupId = ASCIILine(title=u'Group Identifier',
