@@ -14,12 +14,12 @@
     name="groupserver.GroupPrivacy"/>
 
   <adapter provides=".interfaces.IGSGroupVisibility"
-    for="Products.CustomUserFolder.interfaces.IGSUserInfo"
+    for="Products.GSGroup.groupInfo.GSGroupInfo"
     permission="zope2.Public"
     factory=".visibility.GroupVisibility" />
 
   <adapter provides=".interfaces.IGSChangePrivacy"
-    for="Products.CustomUserFolder.interfaces.IGSUserInfo"
+    for="Products.GSGroup.groupInfo.GSGroupInfo"
     permission="zope2.ManageProperties"
     factory=".changebasicprivacy.GSGroupChangeBasicPrivacy" />
 

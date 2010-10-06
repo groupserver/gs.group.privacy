@@ -8,10 +8,10 @@ from Products.GSGroup.utils import clear_visibility_cache
 from interfaces import IGSGroupVisibility
 
 ACI = 'Access contents information'
-everyone = ['Anonymous', 'Authenticated', 'DivisionMember',
+EVERYONE = ['Anonymous', 'Authenticated', 'DivisionMember',
             'DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager', 
             'Owner']
-group = ['DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager', 
+GROUP = ['DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager', 
          'Owner']
 
 
@@ -106,7 +106,7 @@ class GSGroupChangeBasicPrivacy(object):
         # TODO: Audit
 
     def __set_list_subscribe(self, val):
-        mailingList = getattr(self.context.ListManager, self.groupInfo.id)
+        mailingList = getattr(self.groupInfo.groupObj.ListManager, self.groupInfo.id)
         if mailingList.hasProperty('subscribe'):
             mailingList.manage_changeProperties(subscribe=val)
         else:
