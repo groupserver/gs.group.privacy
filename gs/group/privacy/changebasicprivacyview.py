@@ -8,49 +8,14 @@ except ImportError:
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
-from zope.app.form.browser import RadioWidget
-from zope.app.form.browser.widget import renderElement
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from Products.XWFMailingListManager.postContentProvider import \
   GSPostContentProvider
 from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
 from Products.GSGroup.joining import GSGroupJoining
 from Products.GSGroup.utils import clear_visibility_cache
+from gs.content.form.radio import radio_widget
 from interfaces import IGSChangePrivacy, IGSGroupVisibility
-
-# TODO: Move out
-class NotBrokenRadioWidget(RadioWidget):
-    _joinButtonToMessageTemplate = u'%s&nbsp;%s\n'
-    def renderItem(self, index, text, value, name, cssClass):
-        widgetId = '%s.%s' % (name, index)
-        elem = renderElement(u'input',
-                             type="radio",
-                             cssClass=cssClass,
-                             name=name,
-                             id=widgetId,
-                             value=value)
-        label = '<label class="radioLabel" for="%s">%s</label>' % \
-          (widgetId, text)
-        return self._joinButtonToMessageTemplate % (elem, label)
-
-    def renderSelectedItem(self, index, text, value, name, cssClass):
-        """Render a selected item of the list."""
-        widgetId = '%s.%s' % (name, index)
-        elem = renderElement(u'input',
-                             value=value,
-                             name=name,
-                             id=widgetId,
-                             cssClass=cssClass,
-                             checked="checked",
-                             type='radio')
-        label = '<label class="radioLabel" for="%s">%s</label>' % \
-          (widgetId, text)
-        return self._joinButtonToMessageTemplate % (elem, label)
-
-def radio_widget(field, request):
-    return NotBrokenRadioWidget(field,
-                                field.vocabulary,
-                                request)
 
 class GSGroupChangeBasicPrivacyForm(PageForm):
     label = u'Change Group Privacy'
