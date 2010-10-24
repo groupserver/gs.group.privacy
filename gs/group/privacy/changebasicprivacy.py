@@ -28,6 +28,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_group_visibility(EVERYONE)
         self.set_messages_visibility(EVERYONE)
         self.set_files_visibility(EVERYONE)
+        self.set_members_visibility(EVERYONE)
         self.set_joinability_anyone()
         assert self.groupVisibility.isPublic, \
             'Visibility of %s (%s) is %s, not public' % \
@@ -37,6 +38,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_group_visibility(EVERYONE)
         self.set_messages_visibility(GROUP)
         self.set_files_visibility(GROUP)
+        self.set_members_visibility(GROUP)
         self.set_joinability_request()
         assert self.groupVisibility.isPrivate, \
             'Visibility of %s (%s) is %s, not private' % \
@@ -46,6 +48,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_group_visibility(GROUP)
         self.set_messages_visibility(GROUP)
         self.set_files_visibility(GROUP)
+        self.set_members_visibility(GROUP)
         self.set_joinability_invite()
         assert self.groupVisibility.isSecret, \
             'Visibility of %s (%s) is %s, not secret' % \
@@ -81,6 +84,16 @@ class GSGroupChangeBasicPrivacy(object):
         files.manage_permission('View', roles)
         files.manage_permission(ACI, roles)
         clear_visibility_cache(files)
+    
+    def set_members_visibility(self, roles):
+        assert self.groupInfo
+        assert self.groupInfo.groupObj
+        # TODO: Audit
+        if hasattr(self.groupInfo.groupObj, 'members'):
+            members = self.groupInfo.groupObj.members
+            members.manage_permission('View', roles)
+            members.manage_permission(ACI, roles)
+            clear_visibility_cache(members)
         
     @property
     def joinability(self):

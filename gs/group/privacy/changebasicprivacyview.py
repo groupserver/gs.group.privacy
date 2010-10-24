@@ -67,7 +67,8 @@ class GSGroupChangeBasicPrivacyForm(PageForm):
           'public':  privacyController.set_group_public,
           'private': privacyController.set_group_private,
           'secret':  privacyController.set_group_secret}[p]()
-        self.status = u'TODO: I should set the status'
+        self.status = u'Changed the privacy setting for %s '\
+          u'to <strong>%s</strong>.' % (self.groupInfo.name, p)
         
         self.groupsInfo.clear_groups_cache()
         GSPostContentProvider.cookedTemplates.clear()
