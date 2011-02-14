@@ -9,8 +9,7 @@ from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
-from Products.XWFMailingListManager.postContentProvider import \
-  GSPostContentProvider
+from gs.group.messages.post.postcontentprovider import GSPostContentProvider
 from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
 from Products.GSGroup.joining import GSGroupJoining
 from Products.GSGroup.utils import clear_visibility_cache

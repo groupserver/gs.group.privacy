@@ -32,6 +32,7 @@ setup(name='gs.group.privacy',
     zip_safe=True,
     install_requires=[
         'setuptools',
+        'gs.group.messages.post',
         # -*- Extra requirements: -*-
     ],
     entry_points="""
