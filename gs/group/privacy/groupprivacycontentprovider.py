@@ -8,6 +8,7 @@ from AccessControl.PermissionRole import rolesForPermissionOn
 from interfaces import IGSGroupPrivacyContentProvider
 
 class Views(object):
+    # TODO: Generalise
     def __init__(self, instance):
         roles = rolesForPermissionOn('View', instance)
         self.anon = 'Anonymous' in roles
