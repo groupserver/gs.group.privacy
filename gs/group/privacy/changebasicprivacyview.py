@@ -71,7 +71,6 @@ class GSGroupChangeBasicPrivacyForm(PageForm):
         
         self.groupsInfo.clear_groups_cache()
         GSPostContentProvider.cookedTemplates.clear()
-        GSPostContentProvider.cookedResult.clear()
         assert self.status
         assert type(self.status) == unicode
 
