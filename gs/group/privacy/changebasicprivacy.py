@@ -30,9 +30,10 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_files_visibility(EVERYONE)
         self.set_members_visibility(EVERYONE)
         self.set_joinability_anyone()
-        assert self.groupVisibility.isPublic, \
+        assert self.groupVisibility.isPrivate, \
             'Visibility of %s (%s) is %s, not public' % \
-            (self.groupInfo.name, self.groupInfo.id, vis)
+            (self.groupInfo.name, self.groupInfo.id, 
+             self.groupVisibility.visibility)
         
     def set_group_private(self):
         self.set_group_visibility(EVERYONE)
@@ -42,7 +43,8 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_joinability_request()
         assert self.groupVisibility.isPrivate, \
             'Visibility of %s (%s) is %s, not private' % \
-            (self.groupInfo.name, self.groupInfo.id, vis)
+            (self.groupInfo.name, self.groupInfo.id, 
+             self.groupVisibility.visibility)
 
     def set_group_secret(self):
         self.set_group_visibility(GROUP)
@@ -50,9 +52,10 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_files_visibility(GROUP)
         self.set_members_visibility(GROUP)
         self.set_joinability_invite()
-        assert self.groupVisibility.isSecret, \
+        assert self.groupVisibility.isPrivate, \
             'Visibility of %s (%s) is %s, not secret' % \
-            (self.groupInfo.name, self.groupInfo.id, vis)
+            (self.groupInfo.name, self.groupInfo.id, 
+             self.groupVisibility.visibility)
 
     def set_group_visibility(self, roles):
         assert type(roles) == list
