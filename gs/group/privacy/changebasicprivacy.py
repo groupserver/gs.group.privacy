@@ -30,7 +30,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_files_visibility(EVERYONE)
         self.set_members_visibility(EVERYONE)
         self.set_joinability_anyone()
-        assert self.groupVisibility.isPrivate, \
+        assert self.groupVisibility.isPublic, \
             'Visibility of %s (%s) is %s, not public' % \
             (self.groupInfo.name, self.groupInfo.id, 
              self.groupVisibility.visibility)
@@ -52,7 +52,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_files_visibility(GROUP)
         self.set_members_visibility(GROUP)
         self.set_joinability_invite()
-        assert self.groupVisibility.isPrivate, \
+        assert self.groupVisibility.isSecret, \
             'Visibility of %s (%s) is %s, not secret' % \
             (self.groupInfo.name, self.groupInfo.id, 
              self.groupVisibility.visibility)
