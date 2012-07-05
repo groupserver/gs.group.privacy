@@ -22,7 +22,9 @@ class GSGroupChangeBasicPrivacy(object):
 
     @property
     def groupVisibility(self):
-        return IGSGroupVisibility(self.groupInfo)
+        retval = IGSGroupVisibility(self.groupInfo)
+        print retval
+        return retval
 
     def set_group_public(self):
         self.set_group_visibility(EVERYONE)

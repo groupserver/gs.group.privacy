@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_layout/page">
+  metal:use-macro="context/@@groupserver_site_home_layout/page">
   <head>
     <title metal:fill-slot="title">
       <span tal:replace="string:${view/label}: ${view/siteInfo/get_name}">
@@ -19,12 +19,14 @@
         
         <h1 tal:content="view/label">Edit Basic Group Privacy</h1>
         <p>
-          There are three basic privacy settings for an online group:
+          There are three possible privacy settings for
+          <a tal:attributes="href view/groupInfo/relativeURL;"
+             tal:content="view/groupInfo/name"
+             class="group" href="#">this group</a>:
           public, private, and secret.
           Changing the privacy setting will alter who can see the group
           and the posts.
-          However, only group members can post messages to the group in
-          all cases.
+          However, only group members can ever post messages to the group.
         </p>
         <tal:block define="widgets view/widgets">
           <tal:block replace="structure provider:groupserver.FormWidgets"/>
