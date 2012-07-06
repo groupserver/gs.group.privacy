@@ -18,12 +18,9 @@ class GroupVisibility(object):
         grp = self.groupInfo.groupObj
         msgs = getattr(grp, 'messages', None)
         msgsVis = get_visibility(msgs)
-        print msgsVis
         files = getattr(grp, 'files', None)
         filesVis = get_visibility(files)
-        print filesVis
         grpVis = get_visibility(grp)
-        print grpVis
 
         retval = ODD
         if ((msgsVis == PERM_ANN) 

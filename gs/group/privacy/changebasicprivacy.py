@@ -4,7 +4,6 @@
 # TODO: Move GSGroupJoining here
 from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
 from Products.GSGroup.joining import GSGroupJoining
-from Products.GSGroup.utils import clear_visibility_cache
 from interfaces import IGSGroupVisibility
 
 ACI = 'Access contents information'
@@ -23,7 +22,6 @@ class GSGroupChangeBasicPrivacy(object):
     @property
     def groupVisibility(self):
         retval = IGSGroupVisibility(self.groupInfo)
-        print retval
         return retval
 
     def set_group_public(self):
@@ -67,7 +65,6 @@ class GSGroupChangeBasicPrivacy(object):
         group = self.groupInfo.groupObj
         group.manage_permission('View', roles)
         group.manage_permission(ACI, roles)
-        clear_visibility_cache(group)
     
     def set_messages_visibility(self, roles):
         assert type(roles) == list
@@ -78,7 +75,6 @@ class GSGroupChangeBasicPrivacy(object):
         messages = self.groupInfo.groupObj.messages
         messages.manage_permission('View', roles)
         messages.manage_permission(ACI, roles)
-        clear_visibility_cache(messages)
         
     def set_files_visibility(self, roles):
         assert self.groupInfo
@@ -88,7 +84,6 @@ class GSGroupChangeBasicPrivacy(object):
         files = self.groupInfo.groupObj.files
         files.manage_permission('View', roles)
         files.manage_permission(ACI, roles)
-        clear_visibility_cache(files)
     
     def set_members_visibility(self, roles):
         assert self.groupInfo
@@ -98,7 +93,6 @@ class GSGroupChangeBasicPrivacy(object):
             members = self.groupInfo.groupObj.members
             members.manage_permission('View', roles)
             members.manage_permission(ACI, roles)
-            clear_visibility_cache(members)
         
     @property
     def joinability(self):

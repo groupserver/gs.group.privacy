@@ -12,7 +12,6 @@ from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from gs.group.messages.post.postcontentprovider import GSPostContentProvider
 from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
 from Products.GSGroup.joining import GSGroupJoining
-from Products.GSGroup.utils import clear_visibility_cache
 from gs.content.form.radio import radio_widget
 from interfaces import IGSChangePrivacy, IGSGroupVisibility
 
