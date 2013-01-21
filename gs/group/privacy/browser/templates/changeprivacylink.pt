@@ -1,3 +1,4 @@
-<li><a tal:attributes="href string:${view/groupInfo/relativeURL}/admin_change_basic_privacy.html"
-  href="admin_change_basic_privacy.html">Change the group 
-    <strong>privacy</strong></a></li>
+<li id="gs-group-privacy-admin-link">
+  <a tal:attributes="href string:${view/groupInfo/relativeURL}/admin_change_basic_privacy.html"
+     href="admin_change_basic_privacy.html">Change the <strong>privacy</strong></a>
+</li>
