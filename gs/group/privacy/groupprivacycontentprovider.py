@@ -25,7 +25,7 @@ class Views(object):
 
 
 class GroupPrivacyContentProvider(object):
-
+    # TODO: Move to configure.zcml
     implements(IGSGroupPrivacyContentProvider)
     adapts(Interface, IDefaultBrowserLayer, Interface)
 

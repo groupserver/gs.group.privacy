@@ -1,7 +1,7 @@
 #coding: utf-8
 '''Change the Basic Privacy Settings of a GroupServer Group
 '''
-from zope.cachedescriptors import Lazy
+from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
