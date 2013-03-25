@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 import os
 from setuptools import setup, find_packages
 from version import get_version
@@ -27,7 +27,7 @@ setup(name='gs.group.privacy',
     url='http://www.onlinegroups.net/',
     license='other',
     packages=find_packages(exclude=['ez_setup']),
-    namespace_packages=['gs','gs.group'],
+    namespace_packages=['gs', 'gs.group'],
     include_package_data=True,
     zip_safe=True,
     install_requires=[
@@ -38,4 +38,3 @@ setup(name='gs.group.privacy',
     entry_points="""
     # -*- Entry points: -*-
     """,)
-

@@ -1,31 +1,26 @@
 #coding: utf-8
 '''Change the Basic Privacy Settings of a GroupServer Group
 '''
-try:
-    from Products.Five.formlib.formbase import PageForm
-except ImportError:
-    from five.formlib.formbase import PageForm
+from zope.cachedescriptors import Lazy
 from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from gs.group.messages.post.postcontentprovider import GSPostContentProvider
 from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
-from Products.GSGroup.joining import GSGroupJoining
 from gs.content.form.radio import radio_widget
+from gs.group.base import GroupForm
 from interfaces import IGSChangePrivacy, IGSGroupVisibility
 
-class GSGroupChangeBasicPrivacyForm(PageForm):
+
+class GSGroupChangeBasicPrivacyForm(GroupForm):
     label = u'Change Group Privacy'
     pageTemplateFileName = 'browser/templates/change_basic_privacy.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
     def __init__(self, context, request):
-        PageForm.__init__(self, context, request)
-        self.siteInfo = createObject('groupserver.SiteInfo', context)
-        groupInfo = self.groupInfo = \
-          createObject('groupserver.GroupInfo', context)
-        self.__admin = self.__groupsInfo = self.__formFields = None
+        super(GSGroupChangeBasicPrivacyForm, self).__init__(context, request)
+        self.__admin = self.__groupsInfo = None
 
     def setUpWidgets(self, ignore_request=False):
         vis = IGSGroupVisibility(self.groupInfo).visibility
@@ -35,24 +30,19 @@ class GSGroupChangeBasicPrivacyForm(PageForm):
             self.request, form=self, data=data,
             ignore_request=ignore_request)
 
-    @property
+    @Lazy
     def form_fields(self):
-        if self.__formFields == None:
-            self.__formFields = form.Fields(IGSGroupBasicPrivacySettings,
-                                  render_context=False)
-            self.__formFields['basicPrivacy'].custom_widget = \
-                radio_widget
-        assert self.__formFields != None
-        return self.__formFields
+        retval = form.Fields(IGSGroupBasicPrivacySettings, render_context=False)
+        retval['basicPrivacy'].custom_widget = radio_widget
+        assert retval
+        return retval
 
-    @property
+    @Lazy
     def groupsInfo(self):
-        if self.__groupsInfo == None:
-            ctx = get_the_actual_instance_from_zope(self.context)
-            self.__groupsInfo = createObject('groupserver.GroupsInfo', 
-                                    ctx)
-        assert self.__groupsInfo != None
-        return self.__groupsInfo
+        ctx = get_the_actual_instance_from_zope(self.context)
+        retval = createObject('groupserver.GroupsInfo', ctx)
+        assert retval
+        return retval
 
     @form.action(label=u'Change', failure='handle_change_action_failure')
     def handle_change(self, action, data):
@@ -61,13 +51,12 @@ class GSGroupChangeBasicPrivacyForm(PageForm):
 
         privacyController = IGSChangePrivacy(self.groupInfo)
         p = data['basicPrivacy']
-        {
-          'public':  privacyController.set_group_public,
+        {'public': privacyController.set_group_public,
           'private': privacyController.set_group_private,
-          'secret':  privacyController.set_group_secret}[p]()
+          'secret': privacyController.set_group_secret}[p]()
         self.status = u'Changed the privacy setting for %s '\
           u'to <strong>%s</strong>.' % (self.groupInfo.name, p)
-        
+
         self.groupsInfo.clear_groups_cache()
         GSPostContentProvider.cookedTemplates.clear()
         assert self.status
@@ -78,15 +67,14 @@ class GSGroupChangeBasicPrivacyForm(PageForm):
             self.status = u'<p>There is an error:</p>'
         else:
             self.status = u'<p>There are errors:</p>'
-    @property
-    def admin(self):
-        if not(self.__admin):
-            loggedInUser = createObject('groupserver.LoggedInUser',
-                self.context)
-            roles = loggedInUser.user.getRolesInContext(self.groupInfo.groupObj)
-            assert ('GroupAdmin' in roles) or ('DivisionAdmin' in roles), \
-              '%s is not a group admin' % loggedInUser
-            self.__admin = loggedInUser
-        assert self.__admin
-        return self.__admin
 
+    @Lazy
+    def admin(self):
+        usr = self.loggedInUser.user
+        roles = usr.getRolesInContext(self.groupInfo.groupObj)
+        # FIXME: Change to a permission denied error
+        assert ('GroupAdmin' in roles) or ('DivisionAdmin' in roles), \
+              '%s is not a group admin' % self.loggedInUser.id
+        retval = self.loggedInUser
+        assert retval
+        return retval

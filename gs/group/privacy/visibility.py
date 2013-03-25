@@ -2,17 +2,18 @@
 # TODO: Move from Products.GSGroup to here
 from Products.GSGroup.utils import get_visibility, PERM_ANN, PERM_GRP
 
-ODD =     'odd'
-PUBLIC =  'public'
+ODD = 'odd'
+PUBLIC = 'public'
 PRIVATE = 'private'
-SECRET =  'secret'
+SECRET = 'secret'
+
 
 class GroupVisibility(object):
-    
+
     def __init__(self, groupInfo):
         self.groupInfo = groupInfo
 
-    @property        
+    @property
     def visibility(self):
         # TODO: Move to a utility
         grp = self.groupInfo.groupObj
@@ -23,19 +24,19 @@ class GroupVisibility(object):
         grpVis = get_visibility(grp)
 
         retval = ODD
-        if ((msgsVis == PERM_ANN) 
+        if ((msgsVis == PERM_ANN)
             and (filesVis == PERM_ANN)
             and (grpVis == PERM_ANN)):
             retval = PUBLIC
-        elif ((msgsVis == PERM_GRP) 
+        elif ((msgsVis == PERM_GRP)
             and (filesVis == PERM_GRP)
             and (grpVis == PERM_ANN)):
             retval = PRIVATE
-        elif ((msgsVis == PERM_GRP) 
+        elif ((msgsVis == PERM_GRP)
             and (filesVis == PERM_GRP)
             and (grpVis == PERM_GRP)):
             retval = SECRET
-        
+
         assert type(retval) == str
         assert retval in [ODD, PUBLIC, PRIVATE, SECRET]
         return retval
@@ -63,4 +64,3 @@ class GroupVisibility(object):
         retval = self.visibility == ODD
         assert type(retval) == bool
         return retval
-

@@ -1,16 +1,13 @@
-#coding: utf-8
-'''Change the Basic Privacy Settings of a GroupServer Group
-'''
+# -*- coding: utf-8 -*-
 # TODO: Move GSGroupJoining here
-from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
 from Products.GSGroup.joining import GSGroupJoining
 from interfaces import IGSGroupVisibility
 
 ACI = 'Access contents information'
 EVERYONE = ['Anonymous', 'Authenticated', 'DivisionMember',
-            'DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager', 
+            'DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager',
             'Owner']
-GROUP = ['DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager', 
+GROUP = ['DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager',
          'Owner']
 
 
@@ -32,9 +29,9 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_joinability_anyone()
         assert self.groupVisibility.isPublic, \
             'Visibility of %s (%s) is %s, not public' % \
-            (self.groupInfo.name, self.groupInfo.id, 
+            (self.groupInfo.name, self.groupInfo.id,
              self.groupVisibility.visibility)
-        
+
     def set_group_private(self):
         self.set_group_visibility(EVERYONE)
         self.set_messages_visibility(GROUP)
@@ -43,7 +40,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_joinability_request()
         assert self.groupVisibility.isPrivate, \
             'Visibility of %s (%s) is %s, not private' % \
-            (self.groupInfo.name, self.groupInfo.id, 
+            (self.groupInfo.name, self.groupInfo.id,
              self.groupVisibility.visibility)
 
     def set_group_secret(self):
@@ -54,7 +51,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_joinability_invite()
         assert self.groupVisibility.isSecret, \
             'Visibility of %s (%s) is %s, not secret' % \
-            (self.groupInfo.name, self.groupInfo.id, 
+            (self.groupInfo.name, self.groupInfo.id,
              self.groupVisibility.visibility)
 
     def set_group_visibility(self, roles):
@@ -65,7 +62,7 @@ class GSGroupChangeBasicPrivacy(object):
         group = self.groupInfo.groupObj
         group.manage_permission('View', roles)
         group.manage_permission(ACI, roles)
-    
+
     def set_messages_visibility(self, roles):
         assert type(roles) == list
         assert self.groupInfo
@@ -75,7 +72,7 @@ class GSGroupChangeBasicPrivacy(object):
         messages = self.groupInfo.groupObj.messages
         messages.manage_permission('View', roles)
         messages.manage_permission(ACI, roles)
-        
+
     def set_files_visibility(self, roles):
         assert self.groupInfo
         assert self.groupInfo.groupObj
@@ -84,7 +81,7 @@ class GSGroupChangeBasicPrivacy(object):
         files = self.groupInfo.groupObj.files
         files.manage_permission('View', roles)
         files.manage_permission(ACI, roles)
-    
+
     def set_members_visibility(self, roles):
         assert self.groupInfo
         assert self.groupInfo.groupObj
@@ -93,7 +90,7 @@ class GSGroupChangeBasicPrivacy(object):
             members = self.groupInfo.groupObj.members
             members.manage_permission('View', roles)
             members.manage_permission(ACI, roles)
-        
+
     @property
     def joinability(self):
         retval = GSGroupJoining(self.groupInfo.groupObj).joinability
@@ -104,7 +101,7 @@ class GSGroupChangeBasicPrivacy(object):
         self.__set_grp_invite('')
         assert self.joinability == 'anyone', 'Joinability not set to anyone'
         # TODO: Audit
-        
+
     def set_joinability_request(self):
         self.__set_list_subscribe('')
         self.__set_grp_invite('apply')
@@ -118,12 +115,13 @@ class GSGroupChangeBasicPrivacy(object):
         # TODO: Audit
 
     def __set_list_subscribe(self, val):
-        mailingList = getattr(self.groupInfo.groupObj.ListManager, self.groupInfo.id)
+        mailingList = getattr(self.groupInfo.groupObj.ListManager,
+                                self.groupInfo.id)
         if mailingList.hasProperty('subscribe'):
             mailingList.manage_changeProperties(subscribe=val)
         else:
             mailingList.manage_addProperty('subscribe', val, 'string')
-        
+
         assert mailingList.getProperty('subscribe') == val, \
           'Subscribe property of the mailing list not set'
         # TODO: Audit
@@ -138,4 +136,3 @@ class GSGroupChangeBasicPrivacy(object):
         assert grp.getProperty('join_condition') == val, \
           'Join condition of the group not set'
         # TODO: Audit
-
