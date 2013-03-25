@@ -32,8 +32,23 @@ setup(name='gs.group.privacy',
     zip_safe=True,
     install_requires=[
         'setuptools',
+        'AccessControl',
+        'zope.cachedescriptors',
+        'zope.component',
+        'zope.contentprovider',
+        'zope.formlib',
+        'zope.interface',
+        'zope.pagetemplate',
+        'zope.publisher',
+        'zope.schema',
+        'Zope2',
+        'gs.content.form',
+        'gs.group.base',
+        'gs.group.member.viewlet',  # For the link viewlet
         'gs.group.messages.post',
-        # -*- Extra requirements: -*-
+        'gs.group.properties',  # For the link to the page
+        'Products.GSGroup',
+        'Products.XWFCore',
     ],
     entry_points="""
     # -*- Entry points: -*-
