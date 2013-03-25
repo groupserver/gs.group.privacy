@@ -13,23 +13,26 @@
     provides="zope.contentprovider.interfaces.IContentProvider"
     name="groupserver.GroupPrivacy"/>
 
-  <adapter provides=".interfaces.IGSGroupVisibility"
+  <adapter 
+    provides=".interfaces.IGSGroupVisibility"
     for="Products.GSGroup.groupInfo.GSGroupInfo"
     permission="zope2.Public"
     factory=".visibility.GroupVisibility" />
 
-  <adapter provides=".interfaces.IGSChangePrivacy"
+  <adapter 
+    provides=".interfaces.IGSChangePrivacy"
     for="Products.GSGroup.groupInfo.GSGroupInfo"
     permission="zope2.ManageProperties"
     factory=".changebasicprivacy.GSGroupChangeBasicPrivacy" />
 
   <browser:page 
-    for="Products.XWFChat.interfaces.IGSGroupFolder"
+    for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_change_basic_privacy.html"
     class=".changebasicprivacyview.GSGroupChangeBasicPrivacyForm"
     permission="zope2.ManageProperties"/>
     
-  <browser:viewlet name="gs-group-home-admin-change-properties-privacy"
+  <browser:viewlet 
+    name="gs-group-home-admin-change-properties-privacy"
     manager="gs.group.properties.interfaces.IGroupAdminPropertiesLinks"
     template="browser/templates/changeprivacylink.pt"
     class="gs.group.member.viewlet.GroupAdminViewlet"
