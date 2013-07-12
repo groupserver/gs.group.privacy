@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_site_home_layout/page">
+  metal:use-macro="context/@@groupserver_layout/page">
   <head>
     <title metal:fill-slot="title">
       <span tal:replace="string:${view/label}: ${view/siteInfo/get_name}">
@@ -13,44 +13,43 @@
     <tal:block content="structure provider:groupserver.FormStatusMessage"
       define="errors view/errors; status view/status; widgets view/widgets"
       metal:fill-slot="messages">&#160;</tal:block>
-    <tal:block metal:fill-slot="body">
-      <form enctype="multipart/form-data"  method="post" action="."
-        tal:attributes="action request/URL" id="change-group-privacy">
-        
-        <h1 tal:content="view/label">Edit Basic Group Privacy</h1>
-        <p>
-          There are three possible privacy settings for
-          <a tal:attributes="href view/groupInfo/relativeURL;"
-             tal:content="view/groupInfo/name"
-             class="group" href="#">this group</a>:
-          public, private, and secret.
-          Changing the privacy setting will alter who can see the group
-          and the posts.
-          However, only group members can ever post messages to the group.
-        </p>
-        <tal:block define="widgets view/widgets">
-          <tal:block replace="structure provider:groupserver.FormWidgets"/>
+     <ul metal:fill-slot="breadcrumb">
+      <li class="site">
+        <a tal:attributes="title string:${view/siteInfo/name} Homepage"
+           href="/" title="Home" class="icon-alone">
+          <span aria-hidden="true" data-icon="&#x2302;"></span>
+          <span class="screen-reader-text"
+                tal:content="string:${view/siteInfo/name} Homepage">Home</span></a>
+      </li>
+      <li>
+        <a class="group" 
+           tal:attributes="href string:${view/groupInfo/relativeURL}/">
+          <strong
+            tal:content="view/groupInfo/name">This group</strong></a>
+      </li>
+      <li tal:content="view/label">Stuff</li>
+    </ul>
+    <form metal:fill-slot="body" enctype="multipart/form-data"  method="post" 
+          action="." id="change-group-privacy"
+          tal:attributes="action request/URL">
+      <h1 tal:content="view/label">Edit Basic Group Privacy</h1>
+      <p>
+        Changing the privacy setting will alter who can <strong>view</strong>
+        the group, view the posts, and <strong>join</strong> the group.
+        (Only group members can ever <strong>post</strong> messages to the
+        group.)
+      </p>
+      <tal:block define="widgets view/widgets">
+        <tal:block replace="structure provider:groupserver.FormWidgets"/>
+      </tal:block>
+      <div class="buttons" tal:condition="view/availableActions">
+        <tal:block repeat="action view/actions">
+          <div class="formelementbutton">
+            <span tal:replace="structure action/render">Button</span>
+          </div>
         </tal:block>
-        <div class="buttons" tal:condition="view/availableActions">
-          <tal:block repeat="action view/actions">
-            <div class="formelementbutton">
-              <span tal:replace="structure action/render">Button</span>
-            </div>
-          </tal:block>
-        </div><!--buttons-->
-      </form>
-    </tal:block>
-    <tal:block metal:fill-slot="javascript">
-      <script type="text/javascript"
-        src="/++resource++popup_help-20071218.js">&#160;</script>
-      <script type="text/javascript">
-        jQuery.noConflict()
-        jQuery(document).ready( function () {
-            GSPopupFormHelp.init('#change-group-privacy');
-            });
-        });
-      </script>
-    </tal:block>
+      </div><!--buttons-->
+    </form>
   </body>
 </html>
 
