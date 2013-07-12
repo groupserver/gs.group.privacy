@@ -4,10 +4,15 @@
   metal:use-macro="context/@@groupserver_layout/page">
   <head>
     <title metal:fill-slot="title">
-      <span tal:replace="string:${view/label}: ${view/siteInfo/get_name}">
-        Change Basic Group Privacy
+      <span tal:replace="string:${view/label}: ${view/siteInfo/get_name}">:
+        Change basic group privacy
       </span>
     </title>
+    <tal:block metal:fill-slot="metadata">
+      <link rel="up" href="#" 
+            tal:attributes="href view/groupInfo/relativeURL;
+                            title view/groupInfo/name"/>
+    </tal:block>
   </head>
   <body>
     <tal:block content="structure provider:groupserver.FormStatusMessage"
@@ -32,7 +37,7 @@
     <form metal:fill-slot="body" enctype="multipart/form-data"  method="post" 
           action="." id="change-group-privacy"
           tal:attributes="action request/URL">
-      <h1 tal:content="view/label">Edit Basic Group Privacy</h1>
+      <h1 tal:content="view/label">Edit basic group privacy</h1>
       <p>
         Changing the privacy setting will alter who can <strong>view</strong>
         the group, view the posts, and <strong>join</strong> the group.
