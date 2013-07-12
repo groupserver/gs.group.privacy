@@ -1,4 +1,4 @@
-#coding: utf-8
+# -*- coding: utf-8 -*-
 # TODO: Move from Products.GSGroup to here
 from Products.GSGroup.utils import get_visibility, PERM_ANN, PERM_GRP
 

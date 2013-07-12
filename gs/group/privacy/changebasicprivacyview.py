@@ -1,4 +1,4 @@
-#coding: utf-8
+# -*- coding: utf-8 -*-
 '''Change the Basic Privacy Settings of a GroupServer Group
 '''
 from zope.cachedescriptors.property import Lazy
@@ -54,8 +54,8 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
         {'public': privacyController.set_group_public,
           'private': privacyController.set_group_private,
           'secret': privacyController.set_group_secret}[p]()
-        self.status = u'Changed the privacy setting for %s '\
-          u'to <strong>%s</strong>.' % (self.groupInfo.name, p)
+        m = u'Changed the privacy setting for {0} to <strong>{1}.</strong>'
+        self.status = m.format(self.groupInfo.name, p)
 
         self.groupsInfo.clear_groups_cache()
         GSPostContentProvider.cookedTemplates.clear()

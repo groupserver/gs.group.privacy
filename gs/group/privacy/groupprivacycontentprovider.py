@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 from zope.component import createObject, adapts
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 from zope.contentprovider.interfaces import UpdateNotCalled
