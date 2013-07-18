@@ -63,7 +63,6 @@ what it means. It takes a group identifier as an argument::
   <p tal:defile:groupId view/groupInfo/id;" 
      tal:replace="structure provider:groupserver.GroupPrivacy">Privacy</p>
 
-
 Resources
 =========
 
