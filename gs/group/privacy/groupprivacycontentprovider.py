@@ -1,11 +1,25 @@
 # -*- coding: utf-8 -*-
+##############################################################################
+#
+# Copyright © 2014 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+###############################################################################
+from __future__ import absolute_import, unicode_literals
 from zope.component import createObject, adapts
 from zope.pagetemplate.pagetemplatefile import PageTemplateFile
 from zope.contentprovider.interfaces import UpdateNotCalled
 from zope.interface import Interface, implements
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from AccessControl.PermissionRole import rolesForPermissionOn
-from interfaces import IGSGroupPrivacyContentProvider
+from .interfaces import IGSGroupPrivacyContentProvider
 
 
 class Views(object):
@@ -48,11 +62,11 @@ class GroupPrivacyContentProvider(object):
         self.messagesView = Views(messages)
 
         if self.groupView.anon and self.messagesView.anon:
-            self.groupType = u'public'
+            self.groupType = 'public'
         elif self.groupView.anon and not(self.messagesView.anon):
-            self.groupType = u'private'
+            self.groupType = 'private'
         elif not(self.groupView.anon):
-            self.groupType = u'secret'
+            self.groupType = 'secret'
         else:
             self.groupType = u'specialised'
 

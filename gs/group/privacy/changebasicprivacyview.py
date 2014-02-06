@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
-'''Change the Basic Privacy Settings of a GroupServer Group
-'''
+##############################################################################
+#
+# Copyright © 2014 OnlineGroups.net and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+###############################################################################
+from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
 from zope.formlib import form
@@ -8,13 +20,13 @@ from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from gs.group.messages.post.postcontentprovider import GSPostContentProvider
 from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
-from gs.content.form.radio import radio_widget
+from gs.content.form import radio_widget
 from gs.group.base import GroupForm
-from interfaces import IGSChangePrivacy, IGSGroupVisibility
+from .interfaces import IGSChangePrivacy, IGSGroupVisibility
 
 
 class GSGroupChangeBasicPrivacyForm(GroupForm):
-    label = u'Change Group Privacy'
+    label = 'Change Group Privacy'
     pageTemplateFileName = 'browser/templates/change_basic_privacy.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
@@ -44,7 +56,7 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
         assert retval
         return retval
 
-    @form.action(label=u'Change', failure='handle_change_action_failure')
+    @form.action(label='Change', failure='handle_change_action_failure')
     def handle_change(self, action, data):
         assert self.context
         assert self.form_fields
@@ -54,19 +66,18 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
         {'public': privacyController.set_group_public,
           'private': privacyController.set_group_private,
           'secret': privacyController.set_group_secret}[p]()
-        m = u'Changed the privacy setting for {0} to <strong>{1}.</strong>'
+        m = 'Changed the privacy setting for {0} to <strong>{1}.</strong>'
         self.status = m.format(self.groupInfo.name, p)
 
         self.groupsInfo.clear_groups_cache()
         GSPostContentProvider.cookedTemplates.clear()
         assert self.status
-        assert type(self.status) == unicode
 
     def handle_change_action_failure(self, action, data, errors):
         if len(errors) == 1:
-            self.status = u'<p>There is an error:</p>'
+            self.status = '<p>There is an error:</p>'
         else:
-            self.status = u'<p>There are errors:</p>'
+            self.status = '<p>There are errors:</p>'
 
     @Lazy
     def admin(self):
