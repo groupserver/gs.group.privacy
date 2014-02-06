@@ -1,32 +1,35 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  id="group-privacy"  
-  tal:define="view options/view">
+     xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     id="group-privacy"
+     tal:define="view options/view">
   <p id="group-privacy-summary">
-    <span class="group" 
-      tal:content="view/groupInfo/name">This group</span> is a 
+    <span class="group"
+          tal:content="view/groupInfo/name">This group</span> is a
     <span class="val"
-      tal:content="view/groupType">ninja</span>
+          tal:content="view/groupType">ninja</span>
     group.
   </p>
   <ul id="group-privacy-details">
-    <li id="group-privacy-details-group">The group is visible to 
+    <li id="group-privacy-details-group">
+      The group is visible to
       <strong tal:condition="view/groupView/anon">anyone.</strong>
       <span tal:condition="view/groupView/siteMemberOnly">people who are
-        <strong>logged in.</strong></span>
-      <strong tal:condition="view/groupView/groupMemberOnly">members 
-        only.</strong></li>
-    <li id="group-privacy-details-posts">Posts made to the group are
-      visible to 
+      <strong>logged in.</strong></span>
+      <strong tal:condition="view/groupView/groupMemberOnly">members
+      only.</strong>
+    </li>
+    <li id="group-privacy-details-posts">
+      Posts made to the group are
+      visible to
       <strong tal:condition="view/messagesView/anon">anyone.</strong>
       <span tal:condition="view/messagesView/siteMemberOnly">people who
-        are <strong>logged in.</strong></span>
-      <strong tal:condition="view/messagesView/groupMemberOnly">members 
-        only.</strong></li>
-    <!--Mention the members list when 
-      - https://projects.iopen.net/groupserver/ticket/348 is delt 
-      - with.-->
+      are <strong>logged in.</strong></span>
+      <strong tal:condition="view/messagesView/groupMemberOnly">members
+      only.</strong>
+    </li>
+    <!--Mention the members list when
+        - https://projects.iopen.net/groupserver/ticket/348 is delt
+        - with.-->
   </ul>
 </div><!--group-privacy-->
-

@@ -1,24 +1,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  metal:use-macro="context/@@groupserver_layout/page">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="context/@@groupserver_layout/page">
   <head>
     <title metal:fill-slot="title">
       <span tal:replace="string:${view/label}: ${view/siteInfo/get_name}">:
-        Change basic group privacy
+      Change basic group privacy
       </span>
     </title>
     <tal:block metal:fill-slot="metadata">
-      <link rel="up" href="#" 
+      <link rel="up" href="#"
             tal:attributes="href view/groupInfo/relativeURL;
                             title view/groupInfo/name"/>
     </tal:block>
   </head>
   <body>
     <tal:block content="structure provider:groupserver.FormStatusMessage"
-      define="errors view/errors; status view/status; widgets view/widgets"
-      metal:fill-slot="messages">&#160;</tal:block>
-     <ul metal:fill-slot="breadcrumb">
+               define="errors view/errors; status view/status; widgets view/widgets"
+               metal:fill-slot="messages">&#160;</tal:block>
+    <ul metal:fill-slot="breadcrumb">
       <li class="site">
         <a tal:attributes="title string:${view/siteInfo/name} Homepage"
            href="/" title="Home" class="icon-alone">
@@ -27,14 +27,14 @@
                 tal:content="string:${view/siteInfo/name} Homepage">Home</span></a>
       </li>
       <li>
-        <a class="group" 
+        <a class="group"
            tal:attributes="href string:${view/groupInfo/relativeURL}/">
           <strong
             tal:content="view/groupInfo/name">This group</strong></a>
       </li>
       <li tal:content="view/label">Stuff</li>
     </ul>
-    <form metal:fill-slot="body" enctype="multipart/form-data"  method="post" 
+    <form metal:fill-slot="body" enctype="multipart/form-data"  method="post"
           action="." id="change-group-privacy"
           tal:attributes="action request/URL">
       <h1 tal:content="view/label">Edit basic group privacy</h1>
@@ -57,4 +57,3 @@
     </form>
   </body>
 </html>
-
