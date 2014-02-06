@@ -17,6 +17,7 @@ from AccessControl.PermissionRole import rolesForPermissionOn
 PERM_ODD = 0
 PERM_ANN = 1
 PERM_GRP = 2
+PERM_SIT = 3
 
 
 def get_visibility(instance):
@@ -24,8 +25,10 @@ def get_visibility(instance):
     roles = rolesForPermissionOn('View', instance)
     if (('Anonymous' in roles) and ('Authenticated' in roles)):
         retval = PERM_ANN
+    elif ('DivisionMember' in roles):
+        retval = PERM_SIT
     elif ('GroupMember' in roles):
         retval = PERM_GRP
     assert type(retval) == int
-    assert retval in (PERM_ODD, PERM_ANN, PERM_GRP)
+    assert retval in (PERM_ODD, PERM_ANN, PERM_SIT, PERM_GRP)
     return retval
