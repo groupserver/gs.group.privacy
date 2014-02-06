@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<configure xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser"
-  xmlns:rdb="http://namespaces.zope.org/rdb"
-  xmlns:sqlos="http://namespaces.sqlobject.org/sqlos"
-  xmlns:five="http://namespaces.zope.org/five">
+<!-- Copyright © 2014 OnlineGroups.net and Contributors. -->
+<!-- All Rights Reserved. -->
 
-  <interface 
+<!-- This software is subject to the provisions of the Zope Public -->
+<!-- License, Version 2.1 (ZPL).  A copy of the ZPL should accompany this -->
+<!-- distribution. -->
+
+<!-- THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED -->
+<!-- WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED -->
+<!-- WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND -->
+<!-- FITNESS FOR A PARTICULAR PURPOSE. -->
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package="zope.viewlet" file="meta.zcml" />
+
+  <interface
     interface=".interfaces.IGSGroupPrivacyContentProvider"
     type="zope.contentprovider.interfaces.ITALNamespaceData"/>
   <adapter
@@ -13,25 +23,25 @@
     provides="zope.contentprovider.interfaces.IContentProvider"
     name="groupserver.GroupPrivacy"/>
 
-  <adapter 
+  <adapter
     provides=".interfaces.IGSGroupVisibility"
     for="Products.GSGroup.groupInfo.GSGroupInfo"
     permission="zope2.Public"
     factory=".visibility.GroupVisibility" />
 
-  <adapter 
+  <adapter
     provides=".interfaces.IGSChangePrivacy"
     for="Products.GSGroup.groupInfo.GSGroupInfo"
     permission="zope2.ManageProperties"
     factory=".changebasicprivacy.GSGroupChangeBasicPrivacy" />
 
-  <browser:page 
+  <browser:page
     for="gs.group.base.interfaces.IGSGroupMarker"
     name="admin_change_basic_privacy.html"
     class=".changebasicprivacyview.GSGroupChangeBasicPrivacyForm"
     permission="zope2.ManageProperties"/>
-    
-  <browser:viewlet 
+
+  <browser:viewlet
     name="gs-group-home-admin-change-properties-privacy"
     manager="gs.group.properties.interfaces.IGroupAdminPropertiesLinks"
     template="browser/templates/changeprivacylink.pt"
@@ -40,4 +50,3 @@
     weight="3" />
 
 </configure>
-
