@@ -13,9 +13,7 @@
 #
 ###############################################################################
 from __future__ import absolute_import, unicode_literals
-# TODO: Move from Products.GSGroup to here
-from Products.GSGroup.utils import get_visibility, PERM_ANN, PERM_GRP
-
+from .utils import get_visibility, PERM_ANN, PERM_GRP
 ODD = 'odd'
 PUBLIC = 'public'
 PRIVATE = 'private'
@@ -51,7 +49,6 @@ class GroupVisibility(object):
             and (grpVis == PERM_GRP)):
             retval = SECRET
 
-        assert type(retval) == str
         assert retval in [ODD, PUBLIC, PRIVATE, SECRET]
         return retval
 
@@ -70,6 +67,12 @@ class GroupVisibility(object):
     @property
     def isPublic(self):
         retval = self.visibility == PUBLIC
+        assert type(retval) == bool
+        return retval
+
+    @property
+    def isPublicToSite(self):
+        retval = False
         assert type(retval) == bool
         return retval
 
