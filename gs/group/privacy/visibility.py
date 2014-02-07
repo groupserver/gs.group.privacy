@@ -13,11 +13,13 @@
 #
 ###############################################################################
 from __future__ import absolute_import, unicode_literals
-from .utils import get_visibility, PERM_ANN, PERM_GRP
+from zope.cachedescriptors.property import Lazy
+from .utils import get_visibility, PERM_ANN, PERM_GRP, PERM_SIT
 ODD = 'odd'
 PUBLIC = 'public'
 PRIVATE = 'private'
 SECRET = 'secret'
+SITE = 'site'
 
 
 class GroupVisibility(object):
@@ -25,7 +27,7 @@ class GroupVisibility(object):
     def __init__(self, groupInfo):
         self.groupInfo = groupInfo
 
-    @property
+    @Lazy
     def visibility(self):
         # TODO: Move to a utility
         grp = self.groupInfo.groupObj
@@ -37,19 +39,23 @@ class GroupVisibility(object):
 
         retval = ODD
         if ((msgsVis == PERM_ANN)
-            and (filesVis == PERM_ANN)
-            and (grpVis == PERM_ANN)):
+                and (filesVis == PERM_ANN)
+                and (grpVis == PERM_ANN)):
             retval = PUBLIC
+        elif ((msgsVis == PERM_SIT)
+                and (filesVis == PERM_SIT)
+                and (grpVis == PERM_SIT)):
+            retval = SITE
         elif ((msgsVis == PERM_GRP)
-            and (filesVis == PERM_GRP)
-            and (grpVis == PERM_ANN)):
+                and (filesVis == PERM_GRP)
+                and (grpVis == PERM_ANN)):
             retval = PRIVATE
         elif ((msgsVis == PERM_GRP)
-            and (filesVis == PERM_GRP)
-            and (grpVis == PERM_GRP)):
+                and (filesVis == PERM_GRP)
+                and (grpVis == PERM_GRP)):
             retval = SECRET
 
-        assert retval in [ODD, PUBLIC, PRIVATE, SECRET]
+        assert retval in [ODD, PUBLIC, SITE, PRIVATE, SECRET]
         return retval
 
     @property
@@ -72,7 +78,7 @@ class GroupVisibility(object):
 
     @property
     def isPublicToSite(self):
-        retval = False
+        retval = self.visibility == SITE
         assert type(retval) == bool
         return retval
 
