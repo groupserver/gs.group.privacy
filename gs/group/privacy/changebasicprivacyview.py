@@ -20,7 +20,7 @@ from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from gs.group.messages.post.postcontentprovider import GSPostContentProvider
 from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
-from gs.content.form import radio_widget
+from gs.content.form.base import radio_widget
 from gs.group.base import GroupForm
 from .interfaces import IGSChangePrivacy, IGSGroupVisibility
 
