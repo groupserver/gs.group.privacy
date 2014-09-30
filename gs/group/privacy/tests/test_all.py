@@ -15,7 +15,9 @@
 from __future__ import absolute_import, unicode_literals
 from unittest import TestSuite, main as unittest_main
 from gs.group.privacy.tests.utils import TestUtils
-testCases = (TestUtils, )
+from gs.group.privacy.tests.visibility import TestVisibility
+
+testCases = (TestUtils, TestVisibility, )
 
 
 def load_tests(loader, tests, pattern):

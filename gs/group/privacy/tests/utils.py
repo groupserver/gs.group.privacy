@@ -17,55 +17,48 @@ from mock import patch
 from unittest import TestCase
 from gs.group.privacy.utils import (get_visibility, PERM_ODD, PERM_ANN,
                                     PERM_GRP, PERM_SIT)
-import gs.group.privacy.utils
-from gs.group.list.command.tests.faux import FauxGroup
+import gs.group.privacy.utils  # lint:ok
 
 
-class FauxSiteInfo(object):
-    name = 'An Example Site'
-    id = 'example'
-
-
-class FauxGroupInfo(object):
-    name = 'An Example Group'
-    id = 'example_group'
-    siteInfo = FauxSiteInfo()
-
-
-class FauxUserInfo(object):
-    name = 'An Example user'
-    id = 'exampleuser'
+class FauxGroup(object):
+    'This is not a group'
 
 
 class TestUtils(TestCase):
 
-    @patch.object(gs.group.privacy.utils, 'rolesForPermissionOn')
-    def test_anon(self, mocked_rfpo):
-        mocked_rfpo.return_value = ['Anonymous', 'Authenticated']
-        g = FauxGroup()
-        r = get_visibility(g)
+    @staticmethod
+    def visibility_tester(v):
+        with patch('gs.group.privacy.utils.rolesForPermissionOn') as rfpo:
+            rfpo.return_value = v
+            g = FauxGroup()
+            retval = get_visibility(g)
+        return retval
+
+    def test_anon(self):
+        v = ['Anonymous', 'Authenticated']
+        r = self.visibility_tester(v)
         self.assertEqual(r, PERM_ANN)
 
-    @patch.object(gs.group.privacy.utils, 'rolesForPermissionOn')
-    def test_anon_noauth(self, mocked_rfpo):
+    def test_anon_noauth(self):
         'Ensure that if we are not authenticated we do not have any perms'
-        mocked_rfpo.return_value = ['Anonymous']
-        g = FauxGroup()
-        r = get_visibility(g)
+        v = ['Anonymous']
+        r = self.visibility_tester(v)
         self.assertEqual(r, PERM_ODD)
 
-    @patch.object(gs.group.privacy.utils, 'rolesForPermissionOn')
-    def test_site_member(self, mocked_rfpo):
+    def test_site_member(self):
         'Ensure that site members are seen as such'
-        mocked_rfpo.return_value = ['DivisionMember', 'EthylTheFrog']
-        g = FauxGroup()
-        r = get_visibility(g)
+        v = ['DivisionMember', 'EthylTheFrog']
+        r = self.visibility_tester(v)
         self.assertEqual(r, PERM_SIT)
 
-    @patch.object(gs.group.privacy.utils, 'rolesForPermissionOn')
-    def test_group_member(self, mocked_rfpo):
+    def test_group_member(self):
         'Ensure that site members are seen as such'
-        mocked_rfpo.return_value = ['GroupMember', 'ToadTheWetSproket']
-        g = FauxGroup()
-        r = get_visibility(g)
+        v = ['GroupMember', 'ToadTheWetSproket']
+        r = self.visibility_tester(v)
         self.assertEqual(r, PERM_GRP)
+
+    def test_odd(self):
+        'Test that odd things are odd'
+        v = ['Tonight we look a violence']
+        r = self.visibility_tester(v)
+        self.assertEqual(r, PERM_ODD)
