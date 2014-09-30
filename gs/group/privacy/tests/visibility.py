@@ -13,6 +13,7 @@
 #
 ############################################################################
 from __future__ import absolute_import, unicode_literals
+from functools import reduce
 from mock import patch
 from unittest import TestCase
 from zope.interface import providedBy
@@ -36,14 +37,18 @@ class FauxGroupInfo(object):
 
 class TestVisibility(TestCase):
 
-    def setUp(self):
-        # messages, files, group
-        self.perms = []
-
     def assertHasInterface(self, obj, interface):
         m = '{0} fails to provide the interface {1}'
         msg = m.format(obj, interface)
         self.assertEqual([interface], list(providedBy(obj)), msg)
+
+    def assertHighlander(self, v):
+        '''Count how many of the ``GroupVisibility.is*`` methods return
+``True``, and assert that the count is ``1``.'''
+        truthyness = [v.isPublic, v.isPrivate, v.isSecret, v.isOdd,
+                      v.isPublicToSite]
+        c = reduce(lambda a, b: a + int(b), truthyness, False)
+        self.assertEqual(1, c, 'There is more than one ({0})'.format(c))
 
     def test_public(self):
         perms = [PERM_ANN, PERM_ANN, PERM_ANN]
@@ -52,10 +57,7 @@ class TestVisibility(TestCase):
             gv.side_effect = perms
             v = GroupVisibility(f)
             self.assertTrue(v.isPublic)
-            self.assertFalse(v.isPrivate)
-            self.assertFalse(v.isSecret)
-            self.assertFalse(v.isOdd)
-            self.assertFalse(v.isPublicToSite)
+            self.assertHighlander(v)
             self.assertEqual(v.visibility, PUBLIC)
             self.assertHasInterface(v, IPublic)
 
@@ -65,11 +67,8 @@ class TestVisibility(TestCase):
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
             gv.side_effect = perms
             v = GroupVisibility(f)
-            self.assertFalse(v.isPublic)
             self.assertTrue(v.isPrivate)
-            self.assertFalse(v.isSecret)
-            self.assertFalse(v.isOdd)
-            self.assertFalse(v.isPublicToSite)
+            self.assertHighlander(v)
             self.assertEqual(v.visibility, PRIVATE)
             self.assertHasInterface(v, IPrivate)
 
@@ -79,11 +78,8 @@ class TestVisibility(TestCase):
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
             gv.side_effect = perms
             v = GroupVisibility(f)
-            self.assertFalse(v.isPublic)
-            self.assertFalse(v.isPrivate)
             self.assertTrue(v.isSecret)
-            self.assertFalse(v.isOdd)
-            self.assertFalse(v.isPublicToSite)
+            self.assertHighlander(v)
             self.assertEqual(v.visibility, SECRET)
             self.assertHasInterface(v, ISecret)
 
@@ -93,11 +89,8 @@ class TestVisibility(TestCase):
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
             gv.side_effect = perms
             v = GroupVisibility(f)
-            self.assertFalse(v.isPublic)
-            self.assertFalse(v.isPrivate)
-            self.assertFalse(v.isSecret)
-            self.assertFalse(v.isOdd)
             self.assertTrue(v.isPublicToSite)
+            self.assertHighlander(v)
             self.assertEqual(v.visibility, SITE)
             self.assertHasInterface(v, IPublicToSiteMember)
 
@@ -106,11 +99,8 @@ class TestVisibility(TestCase):
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
             gv.side_effect = perms
             v = GroupVisibility(f)
-            self.assertFalse(v.isPublic)
-            self.assertFalse(v.isPrivate)
-            self.assertFalse(v.isSecret)
             self.assertTrue(v.isOdd)
-            self.assertFalse(v.isPublicToSite)
+            self.assertHighlander(v)
             self.assertEqual(v.visibility, ODD)
             self.assertHasInterface(v, IOdd)
 
