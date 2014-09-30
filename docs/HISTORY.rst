@@ -6,6 +6,7 @@ Changelog
 
 * Made the group visibility class provide an *interface*
 * Added unit tests for the ``GroupVisibility`` class
+* Added API documentation
 
 2.0.2 (2014-09-17)
 ------------------

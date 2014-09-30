@@ -14,13 +14,32 @@
 ############################################################################
 from __future__ import unicode_literals
 from AccessControl.PermissionRole import rolesForPermissionOn
+
+#: The object has an odd permission
 PERM_ODD = 0
+
+#: The object can be seen by the anonymous user
 PERM_ANN = 1
+
+#: The object can be seen by group members
 PERM_GRP = 2
+
+#: The object can be seen by site members
 PERM_SIT = 3
 
 
 def get_visibility(instance):
+    '''Get the visibility for an object.
+
+:param object instance: An instance of an object
+:returns: The visibility of the object. It will be one of
+          :const:`PERM_ODD`, :const:`PERM_ANN`, :const:`PERM_GRP`, or
+          :const:`PERM_SIT`.
+:rtype: int
+
+The :func:`.get_visibility` function wraps the even-lower
+:func:`AccessControl.PermissionRole.rolesForPermissionOn` function to
+determine who can see an object.'''
     retval = PERM_ODD
     roles = rolesForPermissionOn('View', instance)
     if (('Anonymous' in roles) and ('Authenticated' in roles)):

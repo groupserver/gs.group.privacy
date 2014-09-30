@@ -18,6 +18,8 @@ from zope.interface import alsoProvides
 from .utils import get_visibility, PERM_ANN, PERM_GRP, PERM_SIT
 from .interfaces import (IPublic, IPublicToSiteMember, IPrivate, ISecret,
                          IOdd)
+
+#: Returned from :meth:`.GroupVisiblity.visibility` if the group is odd.
 ODD = 'odd'
 PUBLIC = 'public'
 PRIVATE = 'private'
@@ -26,6 +28,18 @@ SITE = 'site'
 
 
 class GroupVisibility(object):
+    '''The visiblity for a group
+
+:param groupInfo: The group to get the visiblity for.
+:type groupInfo: :class:`Products.GSGroup.interfaces.IGSGroupInfo`
+
+The :class:`.GroupVisiblity` class provides a simple way to determine the
+visibility of a group. The simplest way to determine the visibility is
+through the ``.is*`` methods. Alternatively, this class provides one of
+the interfaces :class:`.interfaces.IPublic`,
+:class:`.interfaces.IPublicToSiteMember`, :class:`.interfaces.IPrivate`,
+:class:`.interfaces.ISecret`, or :class:`.interfaces.IOdd`.
+'''
 
     interfaces = {
         PUBLIC: IPublic,
@@ -72,30 +86,35 @@ class GroupVisibility(object):
 
     @property
     def isSecret(self):
+        '''``True`` if the group is secret'''
         retval = self.visibility == SECRET
         assert type(retval) == bool
         return retval
 
     @property
     def isPrivate(self):
+        '''``True`` if the group is private'''
         retval = self.visibility == PRIVATE
         assert type(retval) == bool
         return retval
 
     @property
     def isPublic(self):
+        '''``True`` if the group is public'''
         retval = self.visibility == PUBLIC
         assert type(retval) == bool
         return retval
 
     @property
     def isPublicToSite(self):
+        '''``True`` if the group is public to the site members'''
         retval = self.visibility == SITE
         assert type(retval) == bool
         return retval
 
     @property
     def isOdd(self):
+        '''``True`` if the group has an odd configuration'''
         retval = self.visibility == ODD
         assert type(retval) == bool
         return retval
