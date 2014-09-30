@@ -15,10 +15,13 @@
 from __future__ import absolute_import, unicode_literals
 from mock import patch
 from unittest import TestCase
+from zope.interface import providedBy
+from gs.group.privacy.interfaces import (IPublic, IPublicToSiteMember,
+                                         IPrivate, ISecret, IOdd)
+from gs.group.privacy.utils import (PERM_ANN, PERM_GRP, PERM_SIT)
 from gs.group.privacy.visibility import (GroupVisibility, ODD, PUBLIC,
                                          PRIVATE, SECRET, SITE)
 import gs.group.privacy.visibility  # lint:ok
-from gs.group.privacy.utils import (PERM_ANN, PERM_GRP, PERM_SIT)
 
 
 class FauxGroup(object):
@@ -53,6 +56,7 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, PUBLIC)
+            self.assertEqual([IPublic], list(providedBy(v)))
 
     def test_private(self):
         self.permissions = [PERM_GRP, PERM_GRP, PERM_ANN]
@@ -66,6 +70,7 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, PRIVATE)
+            self.assertEqual([IPrivate], list(providedBy(v)))
 
     def test_secret(self):
         self.permissions = [PERM_GRP, PERM_GRP, PERM_GRP]
@@ -79,6 +84,7 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, SECRET)
+            self.assertEqual([ISecret], list(providedBy(v)))
 
     def test_public_to_site(self):
         self.permissions = [PERM_SIT, PERM_SIT, PERM_SIT]
@@ -92,6 +98,7 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertTrue(v.isPublicToSite)
             self.assertEqual(v.visibility, SITE)
+            self.assertEqual([IPublicToSiteMember], list(providedBy(v)))
 
     def test_odd_site(self):
         '''Test the odd situation of site-perms on messages and files, but
@@ -107,6 +114,7 @@ group-perms for everything below that.'''
             self.assertTrue(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, ODD)
+            self.assertEqual([IOdd], list(providedBy(v)))
 
     def test_odd_ann(self):
         '''Test the odd situation of anonymous-perms on messages and files,
@@ -122,6 +130,7 @@ but group-perms for the group.'''
             self.assertTrue(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, ODD)
+            self.assertEqual([IOdd], list(providedBy(v)))
 
     def test_odd_ann_site(self):
         '''Test the odd situation of anonymous-perms on messages and files,
@@ -137,3 +146,4 @@ but site-perms for the group.'''
             self.assertTrue(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, ODD)
+            self.assertEqual([IOdd], list(providedBy(v)))

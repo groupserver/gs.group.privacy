@@ -14,7 +14,10 @@
 ############################################################################
 from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
+from zope.interface import alsoProvides
 from .utils import get_visibility, PERM_ANN, PERM_GRP, PERM_SIT
+from .interfaces import (IPublic, IPublicToSiteMember, IPrivate, ISecret,
+                         IOdd)
 ODD = 'odd'
 PUBLIC = 'public'
 PRIVATE = 'private'
@@ -24,12 +27,21 @@ SITE = 'site'
 
 class GroupVisibility(object):
 
+    interfaces = {
+        PUBLIC: IPublic,
+        SITE: IPublicToSiteMember,
+        PRIVATE: IPrivate,
+        SECRET: ISecret,
+        ODD: IOdd}
+
     def __init__(self, groupInfo):
         self.groupInfo = groupInfo
 
+        interface = self.interfaces[self.visibility]
+        alsoProvides(self, interface)
+
     @Lazy
     def visibility(self):
-        # TODO: Move to a utility
         grp = self.groupInfo.groupObj
         msgs = getattr(grp, 'messages', None)
         msgsVis = get_visibility(msgs)

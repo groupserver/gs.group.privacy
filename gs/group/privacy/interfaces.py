@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-#############################################################################
+############################################################################
 from __future__ import absolute_import, unicode_literals
 from zope.interface import Interface
 from zope.contentprovider.interfaces import IContentProvider
@@ -69,22 +69,26 @@ class IGSGroupVisibility(Interface):
 # will have one of these.
 
 
-class IGSPublicGroup(IGSGroupVisibility):
+class IPublic(IGSGroupVisibility):
     '''This is a public group that anyone can join, anyone can view the
 group, and anyone can view the posts.'''
 
 
-class IGSPublicToSiteMember(IGSGroupVisibility):
+class IPublicToSiteMember(IGSGroupVisibility):
     '''This is a public group, if (and only if) you are an existing site
 member. If you are a site member then you can join the group, view the
 group, and view the posts.'''
 
 
-class IGSPrivateGroup(IGSGroupVisibility):
+class IPrivate(IGSGroupVisibility):
     '''This is a private group, so you must be a member to view the posts,
 but anyone can see the group. People can request to be members.'''
 
 
-class IGSSecretGroup(IGSGroupVisibility):
+class ISecret(IGSGroupVisibility):
     '''Only group members can see the group and the posts. People must be
 invited to become members.'''
+
+
+class IOdd(IGSGroupVisibility):
+    '''The group does not fit into a category.'''
