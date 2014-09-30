@@ -40,15 +40,16 @@ class TestVisibility(TestCase):
         # messages, files, group
         self.perms = []
 
-    def permissions(self, *args):
-        retval = self.perms.pop()
-        return retval
+    def assertHasInterface(self, obj, interface):
+        m = '{0} fails to provide the interface {1}'
+        msg = m.format(obj, interface)
+        self.assertEqual([interface], list(providedBy(obj)), msg)
 
     def test_public(self):
-        self.permissions = [PERM_ANN, PERM_ANN, PERM_ANN]
+        perms = [PERM_ANN, PERM_ANN, PERM_ANN]
         f = FauxGroupInfo()
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
-            gv.side_effect = self.permissions
+            gv.side_effect = perms
             v = GroupVisibility(f)
             self.assertTrue(v.isPublic)
             self.assertFalse(v.isPrivate)
@@ -56,13 +57,13 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, PUBLIC)
-            self.assertEqual([IPublic], list(providedBy(v)))
+            self.assertHasInterface(v, IPublic)
 
     def test_private(self):
-        self.permissions = [PERM_GRP, PERM_GRP, PERM_ANN]
+        perms = [PERM_GRP, PERM_GRP, PERM_ANN]
         f = FauxGroupInfo()
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
-            gv.side_effect = self.permissions
+            gv.side_effect = perms
             v = GroupVisibility(f)
             self.assertFalse(v.isPublic)
             self.assertTrue(v.isPrivate)
@@ -70,13 +71,13 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, PRIVATE)
-            self.assertEqual([IPrivate], list(providedBy(v)))
+            self.assertHasInterface(v, IPrivate)
 
     def test_secret(self):
-        self.permissions = [PERM_GRP, PERM_GRP, PERM_GRP]
+        perms = [PERM_GRP, PERM_GRP, PERM_GRP]
         f = FauxGroupInfo()
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
-            gv.side_effect = self.permissions
+            gv.side_effect = perms
             v = GroupVisibility(f)
             self.assertFalse(v.isPublic)
             self.assertFalse(v.isPrivate)
@@ -84,13 +85,13 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertFalse(v.isPublicToSite)
             self.assertEqual(v.visibility, SECRET)
-            self.assertEqual([ISecret], list(providedBy(v)))
+            self.assertHasInterface(v, ISecret)
 
     def test_public_to_site(self):
-        self.permissions = [PERM_SIT, PERM_SIT, PERM_SIT]
+        perms = [PERM_SIT, PERM_SIT, PERM_SIT]
         f = FauxGroupInfo()
         with patch('gs.group.privacy.visibility.get_visibility') as gv:
-            gv.side_effect = self.permissions
+            gv.side_effect = perms
             v = GroupVisibility(f)
             self.assertFalse(v.isPublic)
             self.assertFalse(v.isPrivate)
@@ -98,52 +99,32 @@ class TestVisibility(TestCase):
             self.assertFalse(v.isOdd)
             self.assertTrue(v.isPublicToSite)
             self.assertEqual(v.visibility, SITE)
-            self.assertEqual([IPublicToSiteMember], list(providedBy(v)))
+            self.assertHasInterface(v, IPublicToSiteMember)
+
+    def odd_test(self, perms):
+        f = FauxGroupInfo()
+        with patch('gs.group.privacy.visibility.get_visibility') as gv:
+            gv.side_effect = perms
+            v = GroupVisibility(f)
+            self.assertFalse(v.isPublic)
+            self.assertFalse(v.isPrivate)
+            self.assertFalse(v.isSecret)
+            self.assertTrue(v.isOdd)
+            self.assertFalse(v.isPublicToSite)
+            self.assertEqual(v.visibility, ODD)
+            self.assertHasInterface(v, IOdd)
 
     def test_odd_site(self):
         '''Test the odd situation of site-perms on messages and files, but
 group-perms for everything below that.'''
-        self.permissions = [PERM_SIT, PERM_SIT, PERM_GRP]
-        f = FauxGroupInfo()
-        with patch('gs.group.privacy.visibility.get_visibility') as gv:
-            gv.side_effect = self.permissions
-            v = GroupVisibility(f)
-            self.assertFalse(v.isPublic)
-            self.assertFalse(v.isPrivate)
-            self.assertFalse(v.isSecret)
-            self.assertTrue(v.isOdd)
-            self.assertFalse(v.isPublicToSite)
-            self.assertEqual(v.visibility, ODD)
-            self.assertEqual([IOdd], list(providedBy(v)))
+        self.odd_test([PERM_SIT, PERM_SIT, PERM_GRP])
 
     def test_odd_ann(self):
         '''Test the odd situation of anonymous-perms on messages and files,
 but group-perms for the group.'''
-        self.permissions = [PERM_ANN, PERM_ANN, PERM_GRP]
-        f = FauxGroupInfo()
-        with patch('gs.group.privacy.visibility.get_visibility') as gv:
-            gv.side_effect = self.permissions
-            v = GroupVisibility(f)
-            self.assertFalse(v.isPublic)
-            self.assertFalse(v.isPrivate)
-            self.assertFalse(v.isSecret)
-            self.assertTrue(v.isOdd)
-            self.assertFalse(v.isPublicToSite)
-            self.assertEqual(v.visibility, ODD)
-            self.assertEqual([IOdd], list(providedBy(v)))
+        self.odd_test([PERM_ANN, PERM_ANN, PERM_GRP])
 
     def test_odd_ann_site(self):
         '''Test the odd situation of anonymous-perms on messages and files,
 but site-perms for the group.'''
-        self.permissions = [PERM_ANN, PERM_ANN, PERM_SIT]
-        f = FauxGroupInfo()
-        with patch('gs.group.privacy.visibility.get_visibility') as gv:
-            gv.side_effect = self.permissions
-            v = GroupVisibility(f)
-            self.assertFalse(v.isPublic)
-            self.assertFalse(v.isPrivate)
-            self.assertFalse(v.isSecret)
-            self.assertTrue(v.isOdd)
-            self.assertFalse(v.isPublicToSite)
-            self.assertEqual(v.visibility, ODD)
-            self.assertEqual([IOdd], list(providedBy(v)))
+        self.odd_test([PERM_ANN, PERM_ANN, PERM_SIT])
