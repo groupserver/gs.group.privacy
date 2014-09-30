@@ -47,7 +47,7 @@ class TestVisibility(TestCase):
 ``True``, and assert that the count is ``1``.'''
         truthyness = [v.isPublic, v.isPrivate, v.isSecret, v.isOdd,
                       v.isPublicToSite]
-        c = reduce(lambda a, b: a + int(b), truthyness, False)
+        c = reduce(lambda a, b: a + int(b), truthyness, 0)
         self.assertEqual(1, c, 'There is more than one ({0})'.format(c))
 
     def test_public(self):
