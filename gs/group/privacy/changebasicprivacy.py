@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-###############################################################################
+############################################################################
 # TODO: Move GSGroupJoining here
 from __future__ import absolute_import, unicode_literals
 from Products.GSGroup.joining import GSGroupJoining
@@ -119,7 +119,8 @@ class GSGroupChangeBasicPrivacy(object):
     def set_joinability_request(self):
         self.__set_list_subscribe('')
         self.__set_grp_invite('apply')
-        assert self.joinability == 'request', 'Joinability not set to request'
+        assert self.joinability == 'request', \
+            'Joinability not set to request'
         # TODO: Audit
 
     def set_joinability_invite(self):
@@ -130,14 +131,14 @@ class GSGroupChangeBasicPrivacy(object):
 
     def __set_list_subscribe(self, val):
         mailingList = getattr(self.groupInfo.groupObj.ListManager,
-                                self.groupInfo.id)
+                              self.groupInfo.id)
         if mailingList.hasProperty('subscribe'):
             mailingList.manage_changeProperties(subscribe=val)
         else:
             mailingList.manage_addProperty('subscribe', val, 'string')
 
         assert mailingList.getProperty('subscribe') == val, \
-          'Subscribe property of the mailing list not set'
+            'Subscribe property of the mailing list not set'
         # TODO: Audit
 
     def __set_grp_invite(self, val):
@@ -148,5 +149,5 @@ class GSGroupChangeBasicPrivacy(object):
             grp.manage_addProperty('join_condition', val, 'string')
 
         assert grp.getProperty('join_condition') == val, \
-          'Join condition of the group not set'
+            'Join condition of the group not set'
         # TODO: Audit

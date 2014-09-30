@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-##############################################################################
+############################################################################
 #
 # Copyright © 2014 OnlineGroups.net and Contributors.
 # All Rights Reserved.
@@ -11,7 +11,7 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-###############################################################################
+############################################################################
 from __future__ import absolute_import, unicode_literals
 from zope.cachedescriptors.property import Lazy
 from zope.component import createObject
@@ -31,7 +31,8 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
     def __init__(self, context, request):
-        super(GSGroupChangeBasicPrivacyForm, self).__init__(context, request)
+        super(GSGroupChangeBasicPrivacyForm, self).__init__(context,
+                                                            request)
         self.__admin = self.__groupsInfo = None
 
     def setUpWidgets(self, ignore_request=False):
@@ -44,7 +45,8 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
 
     @Lazy
     def form_fields(self):
-        retval = form.Fields(IGSGroupBasicPrivacySettings, render_context=False)
+        retval = form.Fields(IGSGroupBasicPrivacySettings,
+                             render_context=False)
         retval['basicPrivacy'].custom_widget = radio_widget
         assert retval
         return retval
@@ -64,8 +66,8 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
         privacyController = IGSChangePrivacy(self.groupInfo)
         p = data['basicPrivacy']
         {'public': privacyController.set_group_public,
-          'private': privacyController.set_group_private,
-          'secret': privacyController.set_group_secret}[p]()
+         'private': privacyController.set_group_private,
+         'secret': privacyController.set_group_secret}[p]()
         m = 'Changed the privacy setting for {0} to <strong>{1}.</strong>'
         self.status = m.format(self.groupInfo.name, p)
 
@@ -85,7 +87,7 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
         roles = usr.getRolesInContext(self.groupInfo.groupObj)
         # FIXME: Change to a permission denied error
         assert ('GroupAdmin' in roles) or ('DivisionAdmin' in roles), \
-              '%s is not a group admin' % self.loggedInUser.id
+            '%s is not a group admin' % self.loggedInUser.id
         retval = self.loggedInUser
         assert retval
         return retval
