@@ -28,7 +28,7 @@ with codecs.open(os.path.join("docs", "HISTORY.rst"),
 setup(
     name='gs.group.privacy',
     version=version,
-    description="GroupServer Group Privacy Settings",
+    description="GroupServer group-privacy settings",
     long_description=long_description,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -39,6 +39,8 @@ setup(
         "Natural Language :: English",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: Implementation :: CPython",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords='group, privacy, permissions, role, administration',
@@ -75,6 +77,9 @@ setup(
         'Products.GSGroup',
         'Products.XWFCore',
     ],
+    extras_require={'docs': ['Sphinx']},
+    test_suite="gs.group.privacy.tests.test_all",
+    tests_require=['mock', ],
     entry_points="""
     # -*- Entry points: -*-
     """,)
