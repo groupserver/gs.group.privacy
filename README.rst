@@ -7,7 +7,7 @@ Privacy information about a group
 
 :Author: `Michael JasonSmith`_
 :Contact: Michael JasonSmith <mpj17@onlinegroups.net>
-:Date: 2014-09-30
+:Date: 2014-10-10
 :Organization: `GroupServer.org`_
 :Copyright: This document is licensed under a
   `Creative Commons Attribution-Share Alike 4.0 International License`_
@@ -35,7 +35,9 @@ Content Provider
 
 The content provider ``groupserver.GroupPrivacy`` creates a ``<div>``
 element that displays a summary of the group privacy, and an explanation of
-what it means. It takes a group identifier as an argument::
+what it means. It takes a group identifier as an argument:
+
+.. code-block:: xml
 
   <p tal:defile:groupId view/groupInfo/id;" 
      tal:replace="structure provider:groupserver.GroupPrivacy">Privacy</p>

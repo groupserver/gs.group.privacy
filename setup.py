@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2014 OnlineGroups.net and Contributors.
+# Copyright © 2010, 2011, 2012, 2013, 2014 OnlineGroups.net and
+# Contributors.
+#
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -43,10 +45,10 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    keywords='group, privacy, permissions, role, administration',
+    keywords='group, privacy, permissions, visibility',
     author='Michael JasonSmith',
     author_email='mpj17@onlinegroups.net',
-    url='https://source.iopen.net/groupserver/gs.group.privacy/',
+    url='https://github.com/groupserver/gs.group.privacy/',
     license='ZPL 2.1',
     packages=find_packages(exclude=['ez_setup']),
     namespace_packages=['gs', 'gs.group'],

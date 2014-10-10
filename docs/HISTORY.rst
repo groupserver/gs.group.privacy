@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.1.0 (2014-09-30)
+2.1.0 (2014-10-10)
 ------------------
 
 * Made the group visibility class provide an *interface*
