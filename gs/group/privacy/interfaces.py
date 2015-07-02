@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2014 OnlineGroups.net and Contributors.
+# Copyright © 2014, 2015 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -15,7 +15,8 @@
 from __future__ import absolute_import, unicode_literals
 from zope.interface import Interface
 from zope.contentprovider.interfaces import IContentProvider
-from zope.schema import ASCIILine, Text, Bool
+from zope.schema import ASCIILine, Text, Bool, Choice
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 
 class IGSGroupPrivacyContentProvider(IContentProvider):
@@ -91,3 +92,33 @@ class ISecret(IGSGroupVisibility):
 
 class IOdd(IGSGroupVisibility):
     '''The group does not fit into a category.'''
+
+
+secruityVocab = SimpleVocabulary([
+    SimpleTerm(
+        'public', 'public',
+        'Public: Everyone can view the group, view the posts, and '
+        'join the group.'),
+    SimpleTerm(
+        'private', 'private',
+        'Private: Everyone can view the group, but only group members '
+        'can view the posts. Anyone can request to become a member.'),
+    SimpleTerm(
+        'site', 'site',
+        'Restricted: All site members can view the group and posts. '
+        'Anyone can request to become a member.'),
+    SimpleTerm(
+        'secret', 'secret',
+        'Secret: Only group members can view the group and posts. '
+        'People must be invited to join the group.'), ])
+
+
+class IGroupPrivacySettings(Interface):
+    'The schema for the Change privacy form'
+    privacy = Choice(
+        title='Group privacy',
+        description='This setting determines who can view the group, view '
+                    'the posts made to the group, and join the group. Only '
+                    'members of the group can add posts to the group.',
+        vocabulary=secruityVocab,
+        required=True)
