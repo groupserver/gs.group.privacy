@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2014 OnlineGroups.net and Contributors.
+# Copyright © 2014, 2015 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -19,10 +19,9 @@ from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from gs.group.messages.post.postcontentprovider import GSPostContentProvider
-from Products.GSGroup.interfacesprivacy import IGSGroupBasicPrivacySettings
 from gs.content.form.base import radio_widget
 from gs.group.base import GroupForm
-from .interfaces import IGSChangePrivacy, IGSGroupVisibility
+from .interfaces import IGSChangePrivacy, IGSGroupVisibility, IGroupPrivacySettings
 
 
 class GSGroupChangeBasicPrivacyForm(GroupForm):
@@ -31,13 +30,11 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 
     def __init__(self, context, request):
-        super(GSGroupChangeBasicPrivacyForm, self).__init__(context,
-                                                            request)
-        self.__admin = self.__groupsInfo = None
+        super(GSGroupChangeBasicPrivacyForm, self).__init__(context, request)
 
     def setUpWidgets(self, ignore_request=False):
         vis = IGSGroupVisibility(self.groupInfo).visibility
-        data = {'basicPrivacy': vis}
+        data = {'privacy': vis}
         self.widgets = form.setUpWidgets(
             self.form_fields, self.prefix, self.context,
             self.request, form=self, data=data,
@@ -45,9 +42,9 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
 
     @Lazy
     def form_fields(self):
-        retval = form.Fields(IGSGroupBasicPrivacySettings,
+        retval = form.Fields(IGroupPrivacySettings,
                              render_context=False)
-        retval['basicPrivacy'].custom_widget = radio_widget
+        retval['privacy'].custom_widget = radio_widget
         assert retval
         return retval
 
@@ -58,15 +55,17 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
         assert retval
         return retval
 
-    @form.action(label='Change', failure='handle_change_action_failure')
+    @form.action(label='Change', name='change',
+                 failure='handle_change_action_failure')
     def handle_change(self, action, data):
         assert self.context
         assert self.form_fields
 
         privacyController = IGSChangePrivacy(self.groupInfo)
-        p = data['basicPrivacy']
+        p = data['privacy']
         {'public': privacyController.set_group_public,
          'private': privacyController.set_group_private,
+         'site': privacyController.set_group_restricted,
          'secret': privacyController.set_group_secret}[p]()
         m = 'Changed the privacy setting for {0} to <strong>{1}.</strong>'
         self.status = m.format(self.groupInfo.name, p)
