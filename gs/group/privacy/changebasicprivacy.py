@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ############################################################################
 #
-# Copyright © 2014 OnlineGroups.net and Contributors.
+# Copyright © 2014, 2015 OnlineGroups.net and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -18,11 +18,20 @@ from Products.GSGroup.joining import GSGroupJoining
 from .interfaces import IGSGroupVisibility
 
 ACI = 'Access contents information'
-EVERYONE = ['Anonymous', 'Authenticated', 'DivisionMember',
-            'DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager',
-            'Owner']
+
+#: The roles we talk about when we say "Group member"
 GROUP = ['DivisionAdmin', 'GroupAdmin', 'GroupMember', 'Manager',
          'Owner']
+
+#: The roles involved when we talk about site members
+SITE = ['DivisionMember', ] + GROUP
+
+#: The roles involved when we talk about "Everyone"
+EVERYONE = ['Anonymous', 'Authenticated', ] + SITE
+
+
+class PermissionNotChanged(ValueError):
+    'The permission was not changed'
 
 
 class GSGroupChangeBasicPrivacy(object):
@@ -35,16 +44,22 @@ class GSGroupChangeBasicPrivacy(object):
         retval = IGSGroupVisibility(self.groupInfo)
         return retval
 
+    def get_error_msg(self, shouldBe):
+        m = 'Visibility of {0} ({1}) is {2}, not {3}'
+        retval = m.format(self.groupInfo.name, self.groupInfo.id,
+                          self.groupVisibility.visibility, shouldBe)
+        return retval
+
     def set_group_public(self):
         self.set_group_visibility(EVERYONE)
         self.set_messages_visibility(EVERYONE)
         self.set_files_visibility(EVERYONE)
         self.set_members_visibility(EVERYONE)
         self.set_joinability_anyone()
-        assert self.groupVisibility.isPublic, \
-            'Visibility of %s (%s) is %s, not public' % \
-            (self.groupInfo.name, self.groupInfo.id,
-             self.groupVisibility.visibility)
+
+        if not self.groupVisibility.isPublic:
+            msg = self.get_error_msg('public')
+            raise PermissionNotChanged(msg)
 
     def set_group_private(self):
         self.set_group_visibility(EVERYONE)
@@ -52,10 +67,21 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_files_visibility(GROUP)
         self.set_members_visibility(GROUP)
         self.set_joinability_request()
-        assert self.groupVisibility.isPrivate, \
-            'Visibility of %s (%s) is %s, not private' % \
-            (self.groupInfo.name, self.groupInfo.id,
-             self.groupVisibility.visibility)
+
+        if not self.groupVisibility.isPrivate:
+            msg = self.get_error_msg('private')
+            raise PermissionNotChanged(msg)
+
+    def set_group_restricted(self):
+        self.set_group_visibility(SITE)
+        self.set_messages_visibility(SITE)
+        self.set_files_visibility(SITE)
+        self.set_members_visibility(SITE)
+        self.set_joinability_request()
+
+        if not self.groupVisibility.isPublicToSite:
+            msg = self.get_error_msg('restricted')
+            raise PermissionNotChanged(msg)
 
     def set_group_secret(self):
         self.set_group_visibility(GROUP)
@@ -63,10 +89,10 @@ class GSGroupChangeBasicPrivacy(object):
         self.set_files_visibility(GROUP)
         self.set_members_visibility(GROUP)
         self.set_joinability_invite()
-        assert self.groupVisibility.isSecret, \
-            'Visibility of %s (%s) is %s, not secret' % \
-            (self.groupInfo.name, self.groupInfo.id,
-             self.groupVisibility.visibility)
+
+        if not self.groupVisibility.isSecret:
+            msg = self.get_error_msg('secret')
+            raise PermissionNotChanged(msg)
 
     def set_group_visibility(self, roles):
         assert type(roles) == list
