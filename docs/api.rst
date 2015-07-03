@@ -1,6 +1,8 @@
 :mod:`gs.group.privacy` API Reference
 =====================================
 
+.. currentmodule:: gs.group.privacy
+
 .. autoclass:: gs.group.privacy.GroupVisibility
    :members: 
 
@@ -33,6 +35,9 @@ Interfaces
 .. autoclass:: gs.group.privacy.interfaces.IGSGroupVisibility
    :members:
 
+.. autoclass:: gs.group.privacy.interfaces.IGSChangePrivacy
+   :members:
+
 .. autoclass:: gs.group.privacy.interfaces.IPublic
    :members:
 
@@ -51,10 +56,10 @@ Interfaces
 Visibility function
 -------------------
 
-The :class:`gs.group.privacy.GroupVisibility` class determines
-the visibility of a group by inspecting the objects in the group,
-and the group itself, with the
-:func:`gs.group.privacy.utils.get_visibility` function.
+The :class:`GroupVisibility` class determines the visibility of a
+group by inspecting the objects in the group, and the group
+itself, with the :func:`utils.get_visibility`
+function.
 
 .. automodule:: gs.group.privacy.utils
    :members: get_visibility, PERM_ODD, PERM_ANN, PERM_GRP, PERM_SIT

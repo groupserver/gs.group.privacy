@@ -34,14 +34,19 @@ class IGSGroupPrivacyContentProvider(IContentProvider):
 
 
 class IGSChangePrivacy(Interface):
+    'Adaptors that change the group privacy implement this interface'
+
     def set_group_public():
-        pass
+        'Make the group a *public* group.'
 
     def set_group_private():
-        pass
+        'Make the group a *private* group.'
+
+    def set_group_restricted():
+        'Make the group a *restricted* group.'
 
     def set_group_secret():
-        pass
+        'Make the group a *secret* group.'
 
 
 class IGSGroupVisibility(Interface):
@@ -57,6 +62,10 @@ class IGSGroupVisibility(Interface):
     isPrivate = Bool(
         title='Is Private',
         description='True if the group is private')
+
+    isPublicToSite = Bool(
+        title='Is restricted (public to site members)',
+        description='True if the group is restricted to site members')
 
     isSecret = Bool(
         title='Is Secret',

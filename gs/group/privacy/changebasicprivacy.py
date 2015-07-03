@@ -35,7 +35,10 @@ class PermissionNotChanged(ValueError):
 
 
 class GSGroupChangeBasicPrivacy(object):
+    '''Change the privacy of a group
 
+    :param groupInfo: The group to change
+    :type groupInfo: Products.GSGroup.interfaces.IGSGroupInfo'''
     def __init__(self, groupInfo):
         self.groupInfo = groupInfo
 
