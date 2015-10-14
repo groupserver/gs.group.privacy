@@ -22,10 +22,11 @@ from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
 from gs.content.form.base import radio_widget
 from gs.group.base import GroupForm
 from .interfaces import IGSChangePrivacy, IGSGroupVisibility, IGroupPrivacySettings
+from . import GSMessageFactory as _
 
 
 class GSGroupChangeBasicPrivacyForm(GroupForm):
-    label = 'Change Group Privacy'
+    label = _('Change group privacy')
     pageTemplateFileName = 'browser/templates/change_basic_privacy.pt'
     template = ZopeTwoPageTemplateFile(pageTemplateFileName)
 

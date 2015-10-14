@@ -67,7 +67,7 @@ class GroupPrivacyContentProvider(object):
         elif not(self.groupView.anon):
             self.groupType = 'secret'
         else:
-            self.groupType = u'specialised'
+            self.groupType = 'specialised'
 
     def render(self):
         if not self.__updated:

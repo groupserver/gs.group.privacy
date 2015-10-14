@@ -17,6 +17,7 @@ from zope.interface import Interface
 from zope.contentprovider.interfaces import IContentProvider
 from zope.schema import ASCIILine, Text, Bool, Choice
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from . import GSMessageFactory as _
 
 
 class IGSGroupPrivacyContentProvider(IContentProvider):
@@ -106,26 +107,25 @@ class IOdd(IGSGroupVisibility):
 secruityVocab = SimpleVocabulary([
     SimpleTerm(
         'public', 'public',
-        'Public: Everyone can view the group, view the posts, and '
-        'join the group.'),
+        _('Public: Everyone can view the group, view the posts, and join the group.')),
     SimpleTerm(
         'private', 'private',
-        'Private: Everyone can view the group, but only group members '
-        'can view the posts. Anyone can request to become a member.'),
+        _('Private: Everyone can view the group, but only group members can view the posts. '
+          'Anyone can request to become a member.')),
     SimpleTerm(
         'site', 'site',
-        'Restricted: All site members can view the group and posts. '
-        'Anyone can request to become a member.'),
+        _('Restricted: All site members can view the group and posts.  Anyone can request to '
+         'become a member.')),
     SimpleTerm(
         'secret', 'secret',
-        'Secret: Only group members can view the group and posts. '
-        'People must be invited to join the group.'), ])
+        _('Secret: Only group members can view the group and posts.  People must be invited to '
+          'join the group.')), ])
 
 
 class IGroupPrivacySettings(Interface):
     'The schema for the Change privacy form'
     privacy = Choice(
-        title='Group privacy',
+        title=_('Group privacy'),
         description='This setting determines who can view the group, view '
                     'the posts made to the group, and join the group. Only '
                     'members of the group can add posts to the group.',
