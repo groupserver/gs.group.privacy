@@ -53,8 +53,7 @@ class GroupPrivacyContentProvider(object):
     def update(self):
         self.__updated = True
 
-        self.groupInfo = createObject('groupserver.GroupInfo',
-          self.context, self.groupId)
+        self.groupInfo = createObject('groupserver.GroupInfo', self.context, self.groupId)
 
         group = self.groupInfo.groupObj
         self.groupView = Views(group)

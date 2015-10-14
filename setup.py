@@ -74,7 +74,6 @@ setup(
         'gs.content.layout',
         'gs.group.base',
         'gs.group.member.viewlet',  # For the link viewlet
-        'gs.group.messages.post',
         'gs.group.properties',  # For the link to the page
         'Products.GSGroup',
         'Products.XWFCore',

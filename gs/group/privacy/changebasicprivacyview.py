@@ -18,7 +18,7 @@ from zope.component import createObject
 from zope.formlib import form
 from Products.Five.browser.pagetemplatefile import ZopeTwoPageTemplateFile
 from Products.XWFCore.XWFUtils import get_the_actual_instance_from_zope
-from gs.group.messages.post.postcontentprovider import GSPostContentProvider
+# from gs.group.messages.post.base.postcontentprovider import GSPostContentProvider
 from gs.content.form.base import radio_widget
 from gs.group.base import GroupForm
 from .interfaces import IGSChangePrivacy, IGSGroupVisibility, IGroupPrivacySettings
@@ -71,7 +71,7 @@ class GSGroupChangeBasicPrivacyForm(GroupForm):
         self.status = m.format(self.groupInfo.name, p)
 
         self.groupsInfo.clear_groups_cache()
-        GSPostContentProvider.cookedTemplates.clear()
+        # GSPostContentProvider.cookedTemplates.clear()
         assert self.status
 
     def handle_change_action_failure(self, action, data, errors):
