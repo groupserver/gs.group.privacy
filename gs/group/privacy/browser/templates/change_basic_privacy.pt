@@ -29,8 +29,8 @@
       <li>
         <a class="group"
            tal:attributes="href string:${view/groupInfo/relativeURL}/">
-          <strong
-            tal:content="view/groupInfo/name">This group</strong></a>
+          <b
+            tal:content="view/groupInfo/name">This group</b></a>
       </li>
       <li tal:content="view/label">Stuff</li>
     </ul>
@@ -39,9 +39,9 @@
           tal:attributes="action request/URL">
       <h1 tal:content="view/label">Edit basic group privacy</h1>
       <p>
-        Changing the privacy setting will alter who can <strong>view</strong>
-        the group, view the posts, and <strong>join</strong> the group.
-        (Only group members can ever <strong>post</strong> messages to the
+        Changing the privacy setting will alter who can <b>view</b>
+        the group, view the posts, and <b>join</b> the group.
+        (Only group members can ever <b>post</b> messages to the
         group.)
       </p>
       <tal:block define="widgets view/widgets">
