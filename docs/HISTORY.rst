@@ -1,6 +1,14 @@
 Changelog
 =========
 
+3.0.1 (2015-10-15)
+------------------
+
+* Following the changes to `gs.group.messages.post.base`_
+
+.. _gs.group.messages.post.base:
+   https://github.com/groupserver/gs.group.messages.post.base
+
 3.0.0 (2015-07-05)
 ------------------
 
@@ -21,7 +29,10 @@ Changelog
 2.0.1 (2014-17-11)
 ------------------
 
-* Following the form-code to ``gs.content.form.base``
+* Following the form-code to `gs.content.form.base`_
+
+.. _gs.content.form.base:
+   https://github.com/groupserver/gs.content.form.base
 
 2.0.0 (2014-02-06)
 ------------------
@@ -40,8 +51,11 @@ Changelog
 1.4.2 (2013-03-24)
 ------------------
 
-* Following the member-viewlet to ``gs.group.member.viewlet``
+* Following the member-viewlet to `gs.group.member.viewlet`
 * Code cleanup
+
+.. _gs.group.member.viewlet:
+   https://github.com/groupserver/gs.group.member.viewlet
 
 1.4.1 (2013-01-22)
 ------------------
